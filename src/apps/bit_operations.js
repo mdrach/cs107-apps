@@ -44,6 +44,7 @@ class BitOperations extends React.Component {
     // TODO: make inputs accept hex / binary only
     return (
       <div>
+        <h2>Bit Operations</h2>
         <div>
           Value 1 Hex: 0x<input 
             type="text" 

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import BitOperations from "./apps/bit_operations.js";
 import FloatingPoint from "./apps/floating_point.js";
 import HeapAllocator from "./apps/heap_allocator.js";
+import AssemblyStackFrame from "./apps/assembly_stack_frame.js";
 
 const BasicExample = () => (
   <Router>
@@ -22,7 +23,7 @@ const BasicExample = () => (
           <Link to="/c_strings">C Strings</Link>
         </li>
         <li>
-          <Link to="/assembly">Assembly</Link>
+          <Link to="/assembly_stack_frame">Assembly Stack Frame</Link>
         </li>
         <li>
           <Link to="/heap_allocator">Heap Allocator</Link>
@@ -35,7 +36,7 @@ const BasicExample = () => (
       <Route path="/bit_operations" component={BitOperations} />
       <Route path="/floating_point" component={FloatingPoint} />
       <Route path="/c_strings" component={CStrings} />
-      <Route path="/assembly" component={Assembly} />
+      <Route path="/assembly_stack_frame" component={AssemblyStackFrame} />
       <Route path="/heap_allocator" component={HeapAllocator} />
     </div>
   </Router>
@@ -50,12 +51,6 @@ const Home = () => (
 const CStrings = () => (
   <div>
     <h2>C Strings</h2>
-  </div>
-);
-
-const Assembly = () => (
-  <div>
-    <h2>Assembly</h2>
   </div>
 );
 
