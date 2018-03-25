@@ -80,5 +80,4 @@ class BitOperations extends React.Component {
 }
 
 
-
 export default BitOperations;

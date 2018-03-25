@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import BitOperations from "./apps/bit_operations.js";
+import FloatingPoint from "./apps/floating_point.js";
 
 const BasicExample = () => (
   <Router>
@@ -14,7 +15,7 @@ const BasicExample = () => (
           <Link to="/bit_operations">Bit Operations</Link>
         </li>
         <li>
-          <Link to="/floating_point">Floating Point Numbers</Link>
+          <Link to="/floating_point">Floating Points</Link>
         </li>
         <li>
           <Link to="/c_strings">C Strings</Link>
@@ -31,7 +32,7 @@ const BasicExample = () => (
 
       <Route exact path="/" component={Home} />
       <Route path="/bit_operations" component={BitOperations} />
-      <Route path="/floating_point" component={FloatingPointNumbers} />
+      <Route path="/floating_point" component={FloatingPoint} />
       <Route path="/c_strings" component={CStrings} />
       <Route path="/assembly" component={Assembly} />
       <Route path="/heap_allocator" component={HeapAllocator} />
@@ -42,12 +43,6 @@ const BasicExample = () => (
 const Home = () => (
   <div>
     <h2>Welcome to CS107 Apps, a page with helpful visualizations for CS107 students</h2>
-  </div>
-);
-
-const FloatingPointNumbers = () => (
-  <div>
-    <h2>Floating Point Numbers</h2>
   </div>
 );
 
