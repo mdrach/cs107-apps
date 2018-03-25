@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import BitOperations from "./apps/bit_operations.js";
 import FloatingPoint from "./apps/floating_point.js";
+import HeapAllocator from "./apps/heap_allocator.js";
 
 const BasicExample = () => (
   <Router>
@@ -55,36 +56,6 @@ const CStrings = () => (
 const Assembly = () => (
   <div>
     <h2>Assembly</h2>
-  </div>
-);
-
-const HeapAllocator = ({ match }) => (
-  <div>
-    <h2>Heap Allocator</h2>
-    <ul>
-      <li>
-        <Link to={`${match.url}/rendering`}>Rendering with React</Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/components`}>Components</Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/props-v-state`}>Props v. State</Link>
-      </li>
-    </ul>
-
-    <Route path={`${match.url}/:topicId`} component={Topic} />
-    <Route
-      exact
-      path={match.url}
-      render={() => <h3>Please select a topic.</h3>}
-    />
-  </div>
-);
-
-const Topic = ({ match }) => (
-  <div>
-    <h3>{match.params.topicId}</h3>
   </div>
 );
 
