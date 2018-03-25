@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+import BitOperations from "./apps/bit_operations.js";
+
 const BasicExample = () => (
   <Router>
     <div>
@@ -40,12 +42,6 @@ const BasicExample = () => (
 const Home = () => (
   <div>
     <h2>Welcome to CS107 Apps, a page with helpful visualizations for CS107 students</h2>
-  </div>
-);
-
-const BitOperations = () => (
-  <div>
-    <h2>Bit Operations</h2>
   </div>
 );
 
