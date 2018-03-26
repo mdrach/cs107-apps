@@ -54,7 +54,7 @@ const savedReg = (name, totalBytes, index) => {
         stroke="#111"
         strokeWidth="2"
         fill="none"/>
-        <text text-anchor="middle" x={STACK_X + STACK_WIDTH / 2} y={STACK_Y + (index * regHeight) + (regHeight * .55 )} fontFamily="Verdana" fontSize="35" fill="#555">saved {name}</text>
+        <text textAnchor="middle" x={STACK_X + STACK_WIDTH / 2} y={STACK_Y + (index * regHeight) + (regHeight * .55 )} fontFamily="Verdana" fontSize="35" fill="#555">saved {name}</text>
         <animate id={"reg" + index}
           attributeName="opacity"
           from="0" to="1" dur="1s"

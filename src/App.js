@@ -5,6 +5,7 @@ import BitOperations from "./apps/bit_operations.js";
 import FloatingPoint from "./apps/floating_point.js";
 import HeapAllocator from "./apps/heap_allocator.js";
 import AssemblyStackFrame from "./apps/assembly_stack_frame.js";
+import StackAndHeap from "./apps/stack_and_heap.js";
 
 const BasicExample = () => (
   <Router>
@@ -20,7 +21,7 @@ const BasicExample = () => (
           <Link to="/floating_point">Floating Points</Link>
         </li>
         <li>
-          <Link to="/c_strings">C Strings</Link>
+          <Link to="/stack_and_heap">Stack and Heap</Link>
         </li>
         <li>
           <Link to="/assembly_stack_frame">Assembly Stack Frame</Link>
@@ -35,7 +36,7 @@ const BasicExample = () => (
       <Route exact path="/" component={Home} />
       <Route path="/bit_operations" component={BitOperations} />
       <Route path="/floating_point" component={FloatingPoint} />
-      <Route path="/c_strings" component={CStrings} />
+      <Route path="/stack_and_heap" component={StackAndHeap} />
       <Route path="/assembly_stack_frame" component={AssemblyStackFrame} />
       <Route path="/heap_allocator" component={HeapAllocator} />
     </div>
@@ -45,12 +46,6 @@ const BasicExample = () => (
 const Home = () => (
   <div>
     <h2>Welcome to CS107 Apps, a page with helpful visualizations for CS107 students</h2>
-  </div>
-);
-
-const CStrings = () => (
-  <div>
-    <h2>C Strings</h2>
   </div>
 );
 
