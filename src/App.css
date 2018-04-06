@@ -32,39 +32,62 @@
 
 /* General */
 
-.applet-shell {
-  width: 1200px;
-  margin: auto;
+.applet-wrapper {
+  width: 90%;
+  min-width: 1200px;
+  margin: 0 5%;
 }
 
 .applet-title {
   margin-top: 30px;
-
-}
-
-.applet {
-  margin: 50px;
 }
 
 .applet input[type=text] {
-  border: none;
+  text-align: right;
+  /* border: none; */
+  color: #bf3131;
   background-color: none;
   outline: 0;
-  font-size: 25px;
-  width: 300px;
+  font-size: 40px;
+  width: 100%;
   height: 30px;
 }
 
 .applet input[type=text]:focus {
-  border: none;
+  /* border: none; */
   background-color: none;
   outline: 0;
-  width: 300px;
+  width: 100%;
   height: 30px;
 }
 
-.applet .input-adj-text {
-  font-size: 25px;
+.applet {
+  margin: 50px;
+  font-size: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+/* Bit app */
+
+.inputModule {
+  margin: 0 10px;
+}
+
+.binaryInputModule {
+  width: 800px;
+}
+
+.hexInputModule {
+  width: 300px;
+}
+
+.result {
+  border-top: 3px solid black;
+  margin-top: 10px;
+  font-size: 40px;
+
 }
 
 

@@ -1,4 +1,6 @@
 import React from "react";
+// import ContentEditable from "react-contenteditable";
+
 
 class BitOperations extends React.Component {
   constructor(props) {
@@ -10,21 +12,32 @@ class BitOperations extends React.Component {
     };
   }
 
-  handleChange = (e, base) => {
-    let val = e.target.value;
+	convertInput = (val, base) => {
+    if (val.length >= 2 && (val[1].toLowerCase() === "b" || 
+        val[1].toLowerCase() === "x"))   // TODO make this less hacky
+      val = val.substring(2); 
+
 
     // Error check
     if (val === "")
       val = 0;
-    if ((base === 16 && !/[0-9A-F]+/.test(val)) ||
-        (base === 2 && !/[0-1]+/.test(val)))
-      return;
-    
+    if ((base === 16 && !/^[0-9a-fA-F]+$/.test(val)) ||
+        (base === 2 && !/^[0-1]+$/.test(val)))
+      return null;
 
-    if (e.target.name === "val1") 
-      this.setState({val1: parseInt(val, base)});
-    else if (e.target.name === "val2") 
-      this.setState({val2: parseInt(val, base)});
+		return parseInt(val, base);
+	}
+
+  handleChangeVal1 = (e, base) => {
+		let inputAsInt = this.convertInput(e.target.value, base);
+		if (inputAsInt == null) return;
+		this.setState({val1: inputAsInt});
+  }
+
+  handleChangeVal2 = (e, base) => {
+		let inputAsInt = this.convertInput(e.target.value, base);
+		if (inputAsInt == null) return;
+		this.setState({val2: inputAsInt});
   }
 
   evaluateResult = () => {
@@ -40,41 +53,72 @@ class BitOperations extends React.Component {
 
   render() {
     let result = this.evaluateResult();
+
+    let hexInput = (
+        <div className="inputModule hexInputModule">
+          <div>
+            Hex:
+          </div>
+          <div>
+            <div>
+							<input
+								type="text"
+								value={"0x" + this.state.val1.toString(16)}
+								onChange={(e) => this.handleChangeVal1(e, 16)}
+							/>
+            </div>
+            <div>
+							<input
+								type="text"
+								value={"0x" + this.state.val2.toString(16)}
+								onChange={(e) => this.handleChangeVal2(e, 16)}
+							/>
+            </div>
+            <div className="result">
+            {"0x" + result.toString(16)}
+            </div>
+          </div>
+      </div>
+    );
+
+    let binaryInput = (
+      <div className="inputModule binaryInputModule">
+        <div>
+          Binary:
+        </div>
+          <div>
+            <div>
+							<input
+								type="text"
+								value={"0b" + this.state.val1.toString(2)}
+								onChange={(e) => this.handleChangeVal1(e, 2)}
+							/>
+            </div>
+            <div>
+							<input
+								type="text"
+								value={"0b" + this.state.val2.toString(2)}
+								onChange={(e) => this.handleChangeVal2(e, 2)}
+							/>
+            </div>
+            <div className="result">
+              {"0b" + result.toString(2)}
+            </div>
+          </div>
+        </div>
+    );
+
     
     // TODO: make inputs accept hex / binary only
     return (
-      <div>
-        <h2>Bit Operations</h2>
-        <div>
-          Value 1 Hex: 0x<input 
-            type="text" 
-            name="val1" 
-            value={this.state.val1.toString(16)} 
-            onChange={(e) => this.handleChange(e, 16)} 
-          />
-          Value 2 Hex: 0x<input 
-            type="text" 
-            name="val2" 
-            value={this.state.val2.toString(16)} 
-            onChange={(e) => this.handleChange(e, 16)} 
-          />
+      <div className="applet-wrapper">
+        <h2 className="applet-title">Bit Operations</h2>
+        <div className="applet">
+          {hexInput}
+          {binaryInput}
         </div>
-        <div>
-          Value 1 Binary: 0b<input 
-            type="text" 
-            name="val1" 
-            value={this.state.val1.toString(2)} 
-            onChange={(e) => this.handleChange(e, 2)} 
-          />
-          Value 2 Binary: 0b<input 
-            type="text" 
-            name="val2" 
-            value={this.state.val2.toString(2)} 
-            onChange={(e) => this.handleChange(e, 2)} 
-          />
-        </div>
-        <p>Hex Output: 0x{result.toString(16)}</p>
-        <p>Bin Output: 0b{result.toString(2)}</p>
+					<div>
+					</div>
       </div>
     );
   }
