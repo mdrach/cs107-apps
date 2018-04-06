@@ -1,4 +1,5 @@
 import React from "react";
+import ValUtils from "../helpers/valUtils"
 // import ContentEditable from "react-contenteditable";
 
 
@@ -6,38 +7,22 @@ class BitOperations extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      val1: 6,
+      val1: 1,
       val2: 3,
-      operation: "&"
+      operation: "&",
     };
   }
 
-	convertInput = (val, base) => {
-    if (val.length >= 2 && (val[1].toLowerCase() === "b" || 
-        val[1].toLowerCase() === "x"))   // TODO make this less hacky
-      val = val.substring(2); 
-
-
-    // Error check
-    if (val === "")
-      val = 0;
-    if ((base === 16 && !/^[0-9a-fA-F]+$/.test(val)) ||
-        (base === 2 && !/^[0-1]+$/.test(val)))
-      return null;
-
-		return parseInt(val, base);
-	}
-
   handleChangeVal1 = (e, base) => {
-		let inputAsInt = this.convertInput(e.target.value, base);
-		if (inputAsInt == null) return;
-		this.setState({val1: inputAsInt});
+    let inputAsInt = ValUtils.fromString(e.target.value, base);
+    if (inputAsInt == null) return;
+    this.setState({val1: inputAsInt});
   }
 
   handleChangeVal2 = (e, base) => {
-		let inputAsInt = this.convertInput(e.target.value, base);
-		if (inputAsInt == null) return;
-		this.setState({val2: inputAsInt});
+    let inputAsInt = ValUtils.fromString(e.target.value, base);
+    if (inputAsInt == null) return;
+    this.setState({val2: inputAsInt});
   }
 
   evaluateResult = () => {
@@ -55,60 +40,65 @@ class BitOperations extends React.Component {
     let result = this.evaluateResult();
 
     let hexInput = (
-        <div className="inputModule hexInputModule">
+      <div className="inputModule hexInputModule">
+        <div>
+          Hex:
+        </div>
+        <div>
           <div>
-            Hex:
+            <input
+              type="text"
+              value={ValUtils.toHexString(this.state.val1)}
+              onChange={(e) => this.handleChangeVal1(e, 16)}
+            />
           </div>
           <div>
-            <div>
-							<input
-								type="text"
-								value={"0x" + this.state.val1.toString(16)}
-								onChange={(e) => this.handleChangeVal1(e, 16)}
-							/>
-            </div>
-            <div>
-							<input
-								type="text"
-								value={"0x" + this.state.val2.toString(16)}
-								onChange={(e) => this.handleChangeVal2(e, 16)}
-							/>
-            </div>
-            <div className="result">
+            <input
+              type="text"
+              value={ValUtils.toHexString(this.state.val2)}
+              onChange={(e) => this.handleChangeVal2(e, 16)}
+            />
+          </div>
+          <div className="result">
             {"0x" + result.toString(16)}
-            </div>
           </div>
+        </div>
       </div>
     );
+
+    let numDigits = ValUtils.maxNumBinaryDigits(  
+      this.state.val1, 
+      this.state.val2
+    )  // add zeros to make both binary inputs same length
 
     let binaryInput = (
       <div className="inputModule binaryInputModule">
         <div>
           Binary:
         </div>
+        <div>
           <div>
-            <div>
-							<input
-								type="text"
-								value={"0b" + this.state.val1.toString(2)}
-								onChange={(e) => this.handleChangeVal1(e, 2)}
-							/>
-            </div>
-            <div>
-							<input
-								type="text"
-								value={"0b" + this.state.val2.toString(2)}
-								onChange={(e) => this.handleChangeVal2(e, 2)}
-							/>
-            </div>
-            <div className="result">
-              {"0b" + result.toString(2)}
-            </div>
+            <input
+              type="text"
+              value={ValUtils.toBinaryString(this.state.val1, numDigits)}
+              onChange={(e) => this.handleChangeVal1(e, 2)}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              value={ValUtils.toBinaryString(this.state.val2, numDigits)}
+              onChange={(e) => this.handleChangeVal2(e, 2)}
+            />
+          </div>
+          <div className="result">
+            {"0b" + result.toString(2)}
           </div>
         </div>
+      </div>
     );
 
-    
+
     // TODO: make inputs accept hex / binary only
     return (
       <div className="applet-wrapper">
@@ -117,8 +107,8 @@ class BitOperations extends React.Component {
           {hexInput}
           {binaryInput}
         </div>
-					<div>
-					</div>
+        <div>
+        </div>
       </div>
     );
   }
