@@ -1,6 +1,5 @@
 import React from "react";
 import ValUtils from "../helpers/valUtils"
-// import ContentEditable from "react-contenteditable";
 
 
 class BitOperations extends React.Component {
@@ -14,14 +13,12 @@ class BitOperations extends React.Component {
   }
 
   handleChangeVal1 = (e, base) => {
-    let inputAsInt = ValUtils.fromString(e.target.value, base);
-    if (inputAsInt == null) return;
+    let inputAsInt = ValUtils.fromString(e.target.value, this.state.val1, base);
     this.setState({val1: inputAsInt});
   }
 
   handleChangeVal2 = (e, base) => {
-    let inputAsInt = ValUtils.fromString(e.target.value, base);
-    if (inputAsInt == null) return;
+    let inputAsInt = ValUtils.fromString(e.target.value, this.state.val2, base);
     this.setState({val2: inputAsInt});
   }
 
@@ -39,37 +36,51 @@ class BitOperations extends React.Component {
   render() {
     let result = this.evaluateResult();
 
+
+    let operators = [ { key: '&', value: '&', text: '&' },
+      { key: '|', value: '|', text: '|' }, 
+      { key: '^', value: '^', text: '^' }
+    ];
     let hexInput = (
-      <div className="inputModule hexInputModule">
-        <div>
+      <div className="inputModule">
+        <h2 className="appletTitle">
           Hex:
+        </h2>
+        <div className="valuesAndSign">
+          <div className="sign">
+            <button>&</button>
+          </div>
+          <div className="hexInputModule">
+            <div>
+              <div>
+                <input
+                  className="numericInput"
+                  type="text"
+                  value={ValUtils.toHexString(this.state.val1)}
+                  onChange={(e) => this.handleChangeVal1(e, 16)}
+                />
+              </div>
+              <div>
+                <input
+                  className="numericInput"
+                  type="text"
+                  value={ValUtils.toHexString(this.state.val2)}
+                  onChange={(e) => this.handleChangeVal2(e, 16)}
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <div>
-            <input
-              type="text"
-              value={ValUtils.toHexString(this.state.val1)}
-              onChange={(e) => this.handleChangeVal1(e, 16)}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              value={ValUtils.toHexString(this.state.val2)}
-              onChange={(e) => this.handleChangeVal2(e, 16)}
-            />
-          </div>
-          <div className="result">
-            {"0x" + result.toString(16)}
-          </div>
+        <div className="result">
+          {"0x" + result.toString(16)}
         </div>
       </div>
     );
 
-    let numDigits = ValUtils.maxNumBinaryDigits(  
-      this.state.val1, 
-      this.state.val2
-    )  // add zeros to make both binary inputs same length
+    let numDigits = Math.max(
+      this.state.val1.toString(2).length,
+      this.state.val2.toString(2).length
+    );  // add zeros to make both binary inputs same length
 
     let binaryInput = (
       <div className="inputModule binaryInputModule">
@@ -79,20 +90,22 @@ class BitOperations extends React.Component {
         <div>
           <div>
             <input
+              className="numericInput"
               type="text"
-              value={ValUtils.toBinaryString(this.state.val1, numDigits)}
+              value={ValUtils.toBinaryString(this.state.val1)}
               onChange={(e) => this.handleChangeVal1(e, 2)}
             />
           </div>
           <div>
             <input
+              className="numericInput"
               type="text"
-              value={ValUtils.toBinaryString(this.state.val2, numDigits)}
+              value={ValUtils.toBinaryString(this.state.val2)}
               onChange={(e) => this.handleChangeVal2(e, 2)}
             />
           </div>
           <div className="result">
-            {"0b" + result.toString(2)}
+            {ValUtils.toBinaryString(result, numDigits)}
           </div>
         </div>
       </div>

@@ -20,6 +20,11 @@
 - What to use instead of namespaces in React, for example xvg xlink:href="#theId"
 
 
+# Additional apps
+- base converter binary <-> hex <-> decimal w/ limits.h
+- void * (show how casting changes things)
+
+
 
 
 
