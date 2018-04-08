@@ -109,20 +109,10 @@ class BitOperations extends React.Component {
 					<div className="binaryInputModule">
 						<div>
 							<div>
-								<input
-									className="numericInput"
-									type="text"
-									value={vals[0]}
-									onChange={(e) => this.handleChange(e, 0)}
-								/>
+								{vals[0]}
 							</div>
 							<div>
-								<input
-									className="numericInput"
-									type="text"
-									value={vals[1]}
-									onChange={(e) => this.handleChange(e, 1)}
-								/>
+								{vals[1]}
 							</div>
 						</div>
 					</div>

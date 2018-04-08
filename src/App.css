@@ -87,6 +87,7 @@
 .binaryInputModule {
   font-size: 40px;
   width: 1000px;
+  text-align: right;
 }
 
 .hexInputModule {
