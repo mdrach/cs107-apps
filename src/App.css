@@ -35,6 +35,10 @@
   /* display: none; */
 /* } */
 
+body {
+  font-family: roboto;
+}
+
 .appletWrapper {
   width: 90%;
   min-width: 1200px;
@@ -66,7 +70,7 @@
   color: #bf3131;
   background-color: none;
   outline: 0;
-  font-size: 35px;
+  font-size: 40px;
   width: 100%;
   height: 50px;
 }
@@ -92,6 +96,7 @@
 }
 
 .binaryResult {
+  font-family: monospace;
   height: 50px;
 
 }
@@ -111,7 +116,7 @@
   border-top: 3px solid black;
   margin-top: 10px;
   padding-top: 20px;
-  font-size: 35px;
+  font-size: 40px;
   text-align: right;
   font-weight: bold;
   font-family:monospace;
@@ -129,7 +134,7 @@
   min-width: 60px;
 
   padding-left: 10px;
-  font-size: 35px;
+  font-size: 40px;
   /* font-weight: bold; */
 }
 .operator select, option {

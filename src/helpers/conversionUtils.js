@@ -65,13 +65,14 @@ class ConversionUtils {
       return ConversionUtils.intToBinaryString(val, numDigits);
     if (base === 10)
       return val.toString(10);
+    return "?";
 
 
   }
 
   static intToBinaryString(val, numDigits = null, addSpaces = true) {
     if (val === null) 
-      return "_";
+      return "<invalid input>";
     val = val >>> 0; // interpret as unsigned value
     let valAsString = val.toString(2); 
 

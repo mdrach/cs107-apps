@@ -34,6 +34,53 @@ class BitOperations extends React.Component {
 		throw Error("Invalid bitwise operator");
 	}
 
+	formatBinaryStrings = (bStrings) => {
+		let s1, s2;
+		[s1, s2] = bStrings;
+		let op = this.state.operator;
+
+		// Add leading zeros to make both bit strings same length
+		let maxLen = Math.max(s1.length, s2.length);
+		let s1Padded = (Array(maxLen + 1 - s1.length).join("0") + s1).split("");
+		let s2Padded = (Array(maxLen + 1 - s2.length).join("0") + s2).split("");
+
+		const redSpan = (e) => (<span style={{color: "red", fontWeight: "bold"}}>{e}</span>);
+		const normalSpan = (e) => (<span>{e}</span>);
+
+		for (let i = maxLen-1; i >= 0; i--) {
+			if (op === "&") {
+				if (s1Padded[i] === "1" && s1Padded[i] === s2Padded[i]) {
+					s1Padded[i] = redSpan(s1Padded[i]);
+					s2Padded[i] = redSpan(s2Padded[i]);
+				} else {
+					s1Padded[i] = normalSpan(s1Padded[i]);
+					s2Padded[i] = normalSpan(s2Padded[i]);
+				}
+			} else if (op === "|") {
+				if (s1Padded[i] === "1" || s2Padded[i] === "1") {
+					s1Padded[i] = redSpan(s1Padded[i]);
+					s2Padded[i] = redSpan(s2Padded[i]);
+				} else {
+					s1Padded[i] = normalSpan(s1Padded[i]);
+					s2Padded[i] = normalSpan(s2Padded[i]);
+				}
+			} else if (op === "^") {
+				if (s1Padded[i] !== s2Padded[i]) {
+					s1Padded[i] = redSpan(s1Padded[i]);
+					s2Padded[i] = redSpan(s2Padded[i]);
+				} else {
+					s1Padded[i] = normalSpan(s1Padded[i]);
+					s2Padded[i] = normalSpan(s2Padded[i]);
+				}
+			}
+	}
+
+		s1 = s1Padded.slice(maxLen - s1.length);
+		s2 = s2Padded.slice(maxLen - s2.length);
+
+		return [s1, s2];
+	}
+
 	render() {
 		let result = this.evaluateResult();
 
@@ -41,8 +88,7 @@ class BitOperations extends React.Component {
 			<Select
 				name="form-field-name"
 				valueRenderer={(v) => <div style={{color: "#bf3131", padding: "3px"}}>{v.label}</div>}
-				arrowRenderer={() => ""}
-				style={{height: "40px", width: "60px", textAlign: "center"}}
+				style={{height: "40px", width: "70px", textAlign: "center"}}
 				searchable={false}
 				value={this.state.operator}
 				clearable={false}
@@ -53,7 +99,6 @@ class BitOperations extends React.Component {
 					{ value: '^', label: '^' },
 				]}
 			/>     
-
 		);
 
 		let hexInput = (
@@ -94,10 +139,12 @@ class BitOperations extends React.Component {
 			</div>
 		);
 
-		let vals = this.state.inputs.map(
+		let bStrings = this.state.inputs.map(
 			(e) => ConversionUtils.stringToBinaryString(e)
 		);
-		let numDigits = Math.max(...vals.map((e) => e.replace(/\s/g, '').length));
+		let numDigits = Math.max(...bStrings.map((e) => e.replace(/\s/g, '').length));
+
+		bStrings = this.formatBinaryStrings(bStrings);
 
 		let binaryInput = (
 			<div className="inputModule">
@@ -111,10 +158,10 @@ class BitOperations extends React.Component {
 					<div className="binaryInputModule">
 						<div>
 							<div className="binaryResult">
-								{vals[0]}
+								{bStrings[0]}
 							</div>
 							<div className="binaryResult">
-								{vals[1]}
+								{bStrings[1]}
 							</div>
 						</div>
 					</div>
