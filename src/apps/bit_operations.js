@@ -1,40 +1,31 @@
 import React from "react";
-import {BinaryUtils, HexUtils} from "../helpers/conversionUtils"
+import ConversionUtils from "../helpers/conversionUtils"
 import Select from 'react-select';
 
 class BitOperations extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			val1: 1,
-			val2: 3,
+			inputs: ["0x1", "0x3"],
 			operator: "&",
 		};
 	}
 
-	handleChange = (e, base, whichVal) => {
-		let val = e.target.value;
-		if (val === "") 
-			return null;
+	handleChange = (e, whichVal) => {
+		let input = e.target.value;
 
-		let inputAsInt = base === 16 ?
-			HexUtils.fromString(val) :
-			BinaryUtils.fromString(val);
-
-		if (isNaN(inputAsInt))
+		if (isNaN(ConversionUtils.stringToInt(input)))
 			return;
 
-
-		if (whichVal === 1) 
-			this.setState({val1: inputAsInt});
-		else 
-			this.setState({val2: inputAsInt});
+		let inputs = this.state.inputs;
+		inputs[whichVal === 0 ? 0 : 1] = input;
+		this.setState({inputs: inputs});
 	}
 
 
 	evaluateResult = () => {
-		let val1 = this.state.val1;
-		let val2 = this.state.val2;
+		let val1 = ConversionUtils.stringToInt(this.state.inputs[0]);
+		let val2 = ConversionUtils.stringToInt(this.state.inputs[1]);
 		let op = this.state.operator;
 
 		if (op === "&") return val1 & val2;
@@ -43,31 +34,10 @@ class BitOperations extends React.Component {
 		throw Error("Invalid bitwise operator");
 	}
 
-	// renderOption = (o) => {
-		// return (
-			// <div style={{fontSize: "45px"	}}>{o.label}</div>
-		// );
-	// }
-
-	// renderValue = (v) => {
-		// return (
-			// <div style={{fontSize: "45px"	}}>{v.label}</div>
-		// );
-	// }
-
 	render() {
 		let result = this.evaluateResult();
 
 		let operatorDropdown = (
-			// <div>
-				// <select value={this.state.operator} onChange={(e) => this.setState({operator: e.target.value})} name="text">
-					// <option value="&">&</option> 
-					// <option value="|">|</option>
-					// <option value="^">^</option>
-				// </select>
-			// </div>
-
-
 			<Select
 				name="form-field-name"
 				valueRenderer={(v) => <div style={{color: "#bf3131", padding: "3px"}}>{v.label}</div>}
@@ -101,31 +71,31 @@ class BitOperations extends React.Component {
 								<input
 									className="numericInput"
 									type="text"
-									value={HexUtils.toString(this.state.val1)}
-									onChange={(e) => this.handleChange(e, 16, 1)}
+									value={this.state.inputs[0]}
+									onChange={(e) => this.handleChange(e, 0)}
 								/>
 							</div>
 							<div>
 								<input
 									className="numericInput"
 									type="text"
-									value={HexUtils.toString(this.state.val2)}
-									onChange={(e) => this.handleChange(e, 16, 2)}
+									value={this.state.inputs[1]}
+									onChange={(e) => this.handleChange(e, 1)}
 								/>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div className="result">
-					{HexUtils.toString(result)}
+					{ConversionUtils.intToString(result, 16)}
 				</div>
 			</div>
 		);
 
-		let numDigits = Math.max(
-			this.state.val1 ? this.state.val1.toString(2).length : 0,
-			this.state.val2 ? this.state.val2.toString(2).length : 0
-		);  // add zeros to make both binary inputs same length
+		let vals = this.state.inputs.map(
+			(e) => ConversionUtils.stringToBinaryString(e)
+		);
+		let numDigits = Math.max(...vals.map((e) => e.replace(/\s/g, '').length));
 
 		let binaryInput = (
 			<div className="inputModule">
@@ -142,23 +112,23 @@ class BitOperations extends React.Component {
 								<input
 									className="numericInput"
 									type="text"
-									value={BinaryUtils.toString(this.state.val1)}
-									onChange={(e) => this.handleChange(e, 2, 1)}
+									value={vals[0]}
+									onChange={(e) => this.handleChange(e, 0)}
 								/>
 							</div>
 							<div>
 								<input
 									className="numericInput"
 									type="text"
-									value={BinaryUtils.toString(this.state.val2)}
-									onChange={(e) => this.handleChange(e, 2, 2)}
+									value={vals[1]}
+									onChange={(e) => this.handleChange(e, 1)}
 								/>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div className="result">
-					{BinaryUtils.toString(result, numDigits)}
+					{ConversionUtils.intToString(result, 2, numDigits)}
 				</div>
 			</div>
 		);

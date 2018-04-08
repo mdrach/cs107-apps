@@ -2,28 +2,34 @@ const MAX_BYTES = 4;
 const MAX_BIN_LENGTH = MAX_BYTES * 8;
 const MAX_HEX_LENGTH = MAX_BIN_LENGTH / 4;
 
-class BinaryUtils {
-  static fromString(val) {
-    val = val.replace(/\s/g, '');  //remove spaces
-    if (val.length >= 2 && val.substring(0,2).toLowerCase() === "0b")
-      val = val.substring(2);
-    if (val === null)
-      return null;
+class ConversionUtils {
+  static stringToInt(input) {
+    // if (input === "")
+      // return null;
+    input = input.replace(/\s/g, '').toLowerCase(); // remove spaces
 
-    //Error check
-    if (!/^[0-1]+$/.test(val)) { // Not valid binary
-      return NaN; 
-    }
-    if (val.length > MAX_BIN_LENGTH) { // Too long
-      if (val[0] !== 0)
-        return NaN;
-      else
-        val = val.substring(1);
-    }
-    return parseInt(val, 2);
+    if (/^0x[0-9a-fA-F]+$/.test(input)) // hex
+      return parseInt(input, 16);
+    if (/^0b[0-1]+$/.test(input))       // binary
+      return parseInt(input.substring(2), 2);
+    if (/^[0-9]+$/.test(input)) // decimal
+      return parseInt(input, 10);
+    else
+      return null;
   }
 
-  static toString(val, numDigits = null, addSpaces = true) {
+  static intToString(val, base, numDigits = null) {
+    if (base === 16)
+      return "0x" + val.toString(16);
+    if (base === 2)
+      return ConversionUtils.intToBinaryString(val, numDigits);
+    if (base === 10)
+      return val.toString(10);
+
+
+  }
+
+  static intToBinaryString(val, numDigits = null, addSpaces = true) {
     if (val === null) 
       return "";
     let valAsString = val.toString(2);
@@ -42,36 +48,11 @@ class BinaryUtils {
 
     return valAsString
   }
-}
 
-class HexUtils {
-  static fromString(val) {
-    val = val.replace(/\s/g, '');  //remove spaces
-    if (val.length >= 2 && val.substring(0,2).toLowerCase() === "0x") {
-      val = val.substring(2);
-    }
-    if (val === "")
-      return null;
-
-    // Error check
-    if (!/^[0-9a-fA-F]+$/.test(val)) // not valid hex
-      return NaN;
-    if (val.length > MAX_HEX_LENGTH) {
-      if (val[0] !== 0) // too long
-        return NaN;
-      else
-        val = val.substring(1);
-    }
-    return parseInt(val, 16);
-  }
-
-  static toString(val) {
-    if (!val)
-      return "0x"
-    let valAsString = val.toString(16);
-    return "0x" + valAsString;
+  static stringToBinaryString(input) {
+    return ConversionUtils.intToBinaryString(ConversionUtils.stringToInt(input));
   }
 }
 
 
-export {BinaryUtils, HexUtils};
+export default ConversionUtils;
