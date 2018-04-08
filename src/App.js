@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import "./App.css";
+import 'react-select/dist/react-select.css';
 
 import BitOperations from "./apps/bit_operations.js";
 import FloatingPoint from "./apps/floating_point.js";
