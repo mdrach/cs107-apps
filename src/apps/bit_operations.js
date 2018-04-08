@@ -69,6 +69,7 @@ class BitOperations extends React.Component {
 						<div>
 							<div>
 								<input
+									maxLength={16}
 									className="numericInput"
 									type="text"
 									value={this.state.inputs[0]}
@@ -77,6 +78,7 @@ class BitOperations extends React.Component {
 							</div>
 							<div>
 								<input
+									maxLength={16}
 									className="numericInput"
 									type="text"
 									value={this.state.inputs[1]}
@@ -108,10 +110,10 @@ class BitOperations extends React.Component {
 					</div>
 					<div className="binaryInputModule">
 						<div>
-							<div>
+							<div className="binaryResult">
 								{vals[0]}
 							</div>
-							<div>
+							<div className="binaryResult">
 								{vals[1]}
 							</div>
 						</div>

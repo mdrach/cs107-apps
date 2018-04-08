@@ -1,9 +1,23 @@
-const MAX_BYTES = 4;
-const MAX_BIN_LENGTH = MAX_BYTES * 8;
-const MAX_HEX_LENGTH = MAX_BIN_LENGTH / 4;
+const LIMITS = {
+  "char_bit": 8,
+  "schar_min": -128,
+  "schar_max": 127,
+  "uchar_max": 255,
+  "char_min": -128,
+  "char_max": 127,
+  "mb_len_max": 16,
+  "shrt_min": -32768,
+  "shrt_max": 32767,
+  "ushrt_max": 65535,
+  "int_min": -2147483648,
+  "int_max": 2147483647,
+  // "uint_max": 4294967295,
+  // "long_min": -9223372036854775808,
+  // "long_max": 9223372036854775807,
+  // "ulong_max": 18446744073709551615
+}
 
-const INT32_MAX = (2**31)-1;
-const INT32_MIN = -(2**31);
+
 
 class ConversionUtils {
   static stringToInt(input) {
@@ -11,14 +25,35 @@ class ConversionUtils {
       // return null;
     input = input.replace(/\s/g, '').toLowerCase(); // remove spaces
 
-    if (/^0x[0-9a-fA-F]{1,8}$/.test(input)) // hex
-      return parseInt(input, 16);
-    if (/^0b[0-1]{1,32}$/.test(input))       // binary
-      return parseInt(input.substring(2), 2);
+    if (/^0x[0-9a-fA-F]+$/.test(input)) {  // hex
+        let temp = parseInt(input, 16) & 0xFFFFFFFF;
+      return temp;
+    }
+    if (/^0b[0-1]+$/.test(input)) {       // binary
+        return parseInt(input.substring(2), 2) & 0xFFFFFFFF;
+    }
     if (/^-?[0-9]+$/.test(input)) {          // decimal
-      let val = parseInt(input, 10);
-      if ((val <= INT32_MAX) && (val >= INT32_MIN))
-        return val;
+      return parseInt(input, 10) & 0xFFFFFFFF;  // wrap around
+    }
+    if (LIMITS[input])                       // limit constant
+      return LIMITS[input];
+    if (/^[^<>]+<<[^<>]+$/.test(input)) {    // left shift
+      let oldVal, amount;
+      [oldVal, amount] = input.split("<<").map(
+        (e) => ConversionUtils.stringToInt(e)
+      );
+      if (oldVal !== null && amount !== null && amount >= 0) {
+        return (oldVal << amount);
+      }
+    }
+    if (/^[^<>]+>>[^<>]+$/.test(input)) {     // right shift
+      let oldVal, amount;
+      [oldVal, amount] = input.split(">>").map(
+        (e) => ConversionUtils.stringToInt(e)
+      );
+      if (oldVal !== null && amount !== null && amount >= 0) {
+        return (oldVal >> amount);
+      }
     }
     return null;
   }
@@ -36,7 +71,7 @@ class ConversionUtils {
 
   static intToBinaryString(val, numDigits = null, addSpaces = true) {
     if (val === null) 
-      return "";
+      return "_";
     val = val >>> 0; // interpret as unsigned value
     let valAsString = val.toString(2); 
 
