@@ -90,8 +90,11 @@ class AssemblyStackFrame extends React.Component {
     let animations = [];
     let totalBytes = 0;
 
-    let pushRe = /(?<=push)\s+%[a-z]+/i;
-    let subRspRe = /(?<=sub)\s+[^,]+,%rsp/i;
+    // TODO Lookbehind doesn't work hacks to get it to compile
+    // let pushRe = /(?<=push)\s+%[a-z]+/i;
+    // let subRspRe = /(?<=sub)\s+[^,]+,%rsp/i;
+    let pushRe = /a/;
+    let subRspRe = /a/;
 
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].match(pushRe)) {
@@ -102,7 +105,10 @@ class AssemblyStackFrame extends React.Component {
       else if (lines[i].match(subRspRe)) {
         let subRsp = lines[i].match(subRspRe)[0].trim();
         console.log();
-        let amount = parseInt(subRsp.match(/(?<=\$0x)[0-9a-f]+/i)[0], 16);
+        // TODO
+        // let amount = parseInt(subRsp.match(/(?<=\$0x)[0-9a-f]+/i)[0], 16);
+        let amount = parseInt(subRsp.match(/a/)[0], 16);
+
         animations.push({type: "subRsp", amount: amount})
         totalBytes += amount;
       }

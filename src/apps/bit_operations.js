@@ -1,12 +1,13 @@
 import React from "react";
 import ConversionUtils from "../helpers/conversionUtils"
+import FormatUtils from "../helpers/formatUtils"
 import Select from 'react-select';
 
 class BitOperations extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			inputs: ["0x1", "0x3"],
+			inputs: ["1 << 2", "0x107"],
 			operator: "&",
 		};
 	}
@@ -34,61 +35,17 @@ class BitOperations extends React.Component {
 		throw Error("Invalid bitwise operator");
 	}
 
-	formatBinaryStrings = (bStrings) => {
-		let s1, s2;
-		[s1, s2] = bStrings;
-		let op = this.state.operator;
-
-		// Add leading zeros to make both bit strings same length
-		let maxLen = Math.max(s1.length, s2.length);
-		let s1Padded = (Array(maxLen + 1 - s1.length).join("0") + s1).split("");
-		let s2Padded = (Array(maxLen + 1 - s2.length).join("0") + s2).split("");
-
-		const redSpan = (e) => (<span style={{color: "red", fontWeight: "bold"}}>{e}</span>);
-		const normalSpan = (e) => (<span>{e}</span>);
-
-		for (let i = maxLen-1; i >= 0; i--) {
-			if (op === "&") {
-				if (s1Padded[i] === "1" && s1Padded[i] === s2Padded[i]) {
-					s1Padded[i] = redSpan(s1Padded[i]);
-					s2Padded[i] = redSpan(s2Padded[i]);
-				} else {
-					s1Padded[i] = normalSpan(s1Padded[i]);
-					s2Padded[i] = normalSpan(s2Padded[i]);
-				}
-			} else if (op === "|") {
-				if (s1Padded[i] === "1" || s2Padded[i] === "1") {
-					s1Padded[i] = redSpan(s1Padded[i]);
-					s2Padded[i] = redSpan(s2Padded[i]);
-				} else {
-					s1Padded[i] = normalSpan(s1Padded[i]);
-					s2Padded[i] = normalSpan(s2Padded[i]);
-				}
-			} else if (op === "^") {
-				if (s1Padded[i] !== s2Padded[i]) {
-					s1Padded[i] = redSpan(s1Padded[i]);
-					s2Padded[i] = redSpan(s2Padded[i]);
-				} else {
-					s1Padded[i] = normalSpan(s1Padded[i]);
-					s2Padded[i] = normalSpan(s2Padded[i]);
-				}
-			}
-	}
-
-		s1 = s1Padded.slice(maxLen - s1.length);
-		s2 = s2Padded.slice(maxLen - s2.length);
-
-		return [s1, s2];
-	}
-
 	render() {
 		let result = this.evaluateResult();
 
 		let operatorDropdown = (
 			<Select
-				name="form-field-name"
-				valueRenderer={(v) => <div style={{color: "#bf3131", padding: "3px"}}>{v.label}</div>}
-				style={{height: "40px", width: "70px", textAlign: "center"}}
+				valueRenderer={
+					(v) => <div className="input-module__operator-dropdown__value">
+						{v.label}
+					</div>
+				}
+				className="input-module__operator-dropdown"
 				searchable={false}
 				value={this.state.operator}
 				clearable={false}
@@ -102,20 +59,18 @@ class BitOperations extends React.Component {
 		);
 
 		let hexInput = (
-			<div className="inputModule">
-				<div className="moduleTitle">
-					Hex:
-				</div>
-				<div className="valuesAndOperator">
-					<div className="operator">
+			<div className="input-module">
+				<div className="input-module__body">
+					<div className="input-module__operator">
 						{operatorDropdown}
 					</div>
-					<div className="hexInputModule">
+					<div className="input-module__inputs input-module__inputs--hex">
 						<div>
 							<div>
 								<input
+									autoFocus
 									maxLength={16}
-									className="numericInput"
+									className="input-module__input input-module__input--hex"
 									type="text"
 									value={this.state.inputs[0]}
 									onChange={(e) => this.handleChange(e, 0)}
@@ -124,7 +79,7 @@ class BitOperations extends React.Component {
 							<div>
 								<input
 									maxLength={16}
-									className="numericInput"
+									className="input-module__input input-module__input--hex"
 									type="text"
 									value={this.state.inputs[1]}
 									onChange={(e) => this.handleChange(e, 1)}
@@ -133,7 +88,7 @@ class BitOperations extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className="result">
+				<div className="input-module__result">
 					{ConversionUtils.intToString(result, 16)}
 				</div>
 			</div>
@@ -144,29 +99,26 @@ class BitOperations extends React.Component {
 		);
 		let numDigits = Math.max(...bStrings.map((e) => e.replace(/\s/g, '').length));
 
-		bStrings = this.formatBinaryStrings(bStrings);
+		bStrings = FormatUtils.formatBinaryStrings(bStrings, this.state.operator);
 
 		let binaryInput = (
-			<div className="inputModule">
-				<div className="moduleTitle">
-					Binary:
-				</div>
-				<div className="valuesAndOperator">
-					<div className="operator">
+			<div className="input-module">
+				<div className="input-module__body">
+					<div className="input-module__operator">
 						{this.state.operator}
 					</div>
-					<div className="binaryInputModule">
+					<div className="input-module__inputs input-module__inputs--binary">
 						<div>
-							<div className="binaryResult">
+							<div className="input-module__input">
 								{bStrings[0]}
 							</div>
-							<div className="binaryResult">
+							<div className="input-module__input">
 								{bStrings[1]}
 							</div>
 						</div>
 					</div>
 				</div>
-				<div className="result">
+				<div className="input-module__result">
 					{ConversionUtils.intToString(result, 2, numDigits)}
 				</div>
 			</div>
@@ -174,9 +126,9 @@ class BitOperations extends React.Component {
 
 		// TODO: make inputs accept hex / binary only
 		return (
-			<div className="appletWrapper">
-				<h2 className="appletTitle">Bit Operations</h2>
-				<div className="applet">
+			<div className="app-wrapper">
+				<h2 className="app-title">Bit Operations</h2>
+				<div className="app">
 					{hexInput}
 					{binaryInput}
 				</div>

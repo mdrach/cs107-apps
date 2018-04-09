@@ -91,7 +91,7 @@ class StackAndHeap extends React.Component {
 
   render() {
     console.log(this.parseLines(this.state.input));
-    this.buildAnimation
+    // this.buildAnimation
     return (
       <div>
         <h2>Stack and Heap</h2>

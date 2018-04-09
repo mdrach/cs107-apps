@@ -1,152 +1,128 @@
-/* App.css original */
 
-/* .App { */
-  /* text-align: center; */
-/* } */
-
-/* .App-logo { */
-  /* animation: App-logo-spin infinite 20s linear; */
-  /* height: 80px; */
-/* } */
-
-/* .App-header { */
-  /* background-color: #222; */
-  /* height: 150px; */
-  /* padding: 20px; */
-  /* color: white; */
-/* } */
-
-/* .App-title { */
-  /* font-size: 1.5em; */
-/* } */
-
-/* .App-intro { */
-  /* font-size: large; */
-/* } */
-
-/* @keyframes App-logo-spin { */
-  /* from { transform: rotate(0deg); } */
-  /* to { transform: rotate(360deg); } */
-/* } */
-
-
-/* General */
-/* input::-webkit-calendar-picker-indicator { */
-  /* display: none; */
-/* } */
-
+/* Site general */
 body {
   font-family: roboto;
 }
 
-.appletWrapper {
-  width: 90%;
-  min-width: 1200px;
-  margin: 0 5%;
+/* Navigation */
+
+
+/* App general */
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 1024px;
+  margin: auto;
+
 }
 
-.appletTitle {
-  margin: 30px 30px 30px 0;
-  text-align: center;
-  font-size: 40px;
-  font-weight: bold;
-}
-
-.moduleTitle {
-  margin: 30px 30px 30px 0;
-  font-size: 40px;
+.app-title {
+  /* margin: 30px 30px 30px 0; */
+  text-align: left;
+  font-size: 30px;
   font-weight: bold;
 }
 
 .dataListDropdown {
   width: 70px;
-
 }
 
-.applet .numericInput {
-  text-align: right;
-  font-family: monospace;
-  border: none;
-  color: #bf3131;
-  background-color: none;
-  outline: 0;
-  font-size: 40px;
-  width: 100%;
-  height: 50px;
-}
-
-.applet {
-  margin: 50px;
+.app {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-/* Bit app */
+/* etc */
 
-.inputModule {
+.input-module {
   margin: 0 10px;
 }
 
-.binaryInputModule {
-  font-size: 40px;
-  width: 1000px;
-  height: 100px;
+.input-module__title {
+  /* margin: 30px 30px 30px 0; */
+  /* font-size: 30px; */
+  /* font-weight: bold; */
+}
+
+.input-module__body {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Bit Operations app */
+
+/* input module */
+
+.input-module__inputs {
+  font-size: 25px;
+  height: 120px;
   text-align: right;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
-.binaryResult {
+.input-module__inputs--binary {
+  width: 600px;
+}
+
+.input-module__inputs--hex {
+  width: 200px;
+}
+
+.input-module__input {
   font-family: monospace;
-  height: 50px;
-
+  height: 25px;
+  padding: 5px 0;
+  line-height: 1;
+  margin: 5px 0;
 }
 
-.hexInputModule {
-  font-size: 40px;
-  height: 100px;
-  width: 500px;
+.input-module__input--hex {
+  text-align: right;
+  border: none;
+  border-bottom: 2px solid #BBB;
+
+  /* border-radius: 5px; */
+  /* border-style: solid; */
+  /* border-color: #BBB; */
+  margin: 5px 0;
+  color: #bf3131;
+  background-color: none;
+  outline: 0;
+  font-size: 25px;
+  width: 100%;
 }
 
-.operatorDropdown {
-  width:5px;
-
-}
-
-.result {
+.input-module__result {
   border-top: 3px solid black;
-  margin-top: 10px;
-  padding-top: 20px;
-  font-size: 40px;
+  margin-top: 5px;
+  padding-top: 10px;
+  font-size: 25px;
   text-align: right;
   font-weight: bold;
   font-family:monospace;
 }
 
-.valuesAndOperator {
-  display: flex;
-  flex-direction: row;
-}
-
-.operator {
+.input-module__operator {
   align-items: flex-end;
   flex-direction: row;
   display: flex;
   min-width: 60px;
-
-  padding-left: 10px;
-  font-size: 40px;
-  /* font-weight: bold; */
-}
-.operator select, option {
-  /* padding: 0px; */
-  /* width: 75px; */
-  /* height: 75px; */
-  /* text-align: center; */
-  /* text-align-last: center; */
-  /* text-indent: 20px; */
-  /* font-size: 35px; */
-  /* font-weight: bold; */
+  padding: 10px;
+  font-size: 25px;
 }
 
+.input-module__operator-dropdown {
+  height: 25px;
+  width: 50px;
+}
+
+.input-module__operator-dropdown__value {
+  color: #bf3131;
+}
 
 
