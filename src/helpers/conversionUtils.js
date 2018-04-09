@@ -23,51 +23,53 @@ class ConversionUtils {
   static stringToInt(input) {
     // if (input === "")
       // return null;
+    let result = null;
+
     input = input.replace(/\s/g, '').toLowerCase(); // remove spaces
 
+    let not = /^~[^~]+$/.test(input);
+    if (not) input = input.substring(1);
+
     if (/^0x[0-9a-fA-F]+$/.test(input)) {  // hex
-        let temp = parseInt(input, 16) & 0xFFFFFFFF;
-      return temp;
-    }
-    if (/^0b[0-1]+$/.test(input)) {       // binary
-        return parseInt(input.substring(2), 2) & 0xFFFFFFFF;
-    }
-    if (/^-?[0-9]+$/.test(input)) {          // decimal
-      return parseInt(input, 10) & 0xFFFFFFFF;  // wrap around
-    }
-    if (LIMITS[input])                       // limit constant
-      return LIMITS[input];
+        result = parseInt(input, 16) & 0xFFFFFFFF;
+    } else if (/^0b[0-1]+$/.test(input)) {       // binary
+        result = parseInt(input.substring(2), 2) & 0xFFFFFFFF;
+    } else if (/^-?[0-9]+$/.test(input)) {          // decimal
+      result = parseInt(input, 10) & 0xFFFFFFFF;  // wrap around
+    } else if (LIMITS[input])                       // limit constant
+      result = LIMITS[input];
     if (/^[^<>]+<<[^<>]+$/.test(input)) {    // left shift
       let oldVal, amount;
       [oldVal, amount] = input.split("<<").map(
         (e) => ConversionUtils.stringToInt(e)
       );
       if (oldVal !== null && amount !== null && amount >= 0) {
-        return (oldVal << amount);
+        result = (oldVal << amount);
       }
-    }
-    if (/^[^<>]+>>[^<>]+$/.test(input)) {     // right shift
+    } else if (/^[^<>]+>>[^<>]+$/.test(input)) {     // right shift
       let oldVal, amount;
       [oldVal, amount] = input.split(">>").map(
         (e) => ConversionUtils.stringToInt(e)
       );
       if (oldVal !== null && amount !== null && amount >= 0) {
-        return (oldVal >> amount);
+        result = (oldVal >> amount);
       }
     }
-    return null;
+    return (not) ? ~result : result;
   }
 
   static intToString(val, base, numDigits = null) {
+    if (val === null)
+      return "<invalid input>"
+
     if (base === 16)
       return "0x" + (val >>> 0).toString(16); // >>> 0 to interpret as unsigned
     if (base === 2)
       return ConversionUtils.intToBinaryString(val, numDigits);
     if (base === 10)
       return val.toString(10);
-    return "?";
 
-
+    return "<invalid input>";
   }
 
   static intToBinaryString(val, numDigits = null, addSpaces = true) {
@@ -95,8 +97,8 @@ class ConversionUtils {
     return valAsString
   }
 
-  static stringToBinaryString(input) {
-    return ConversionUtils.intToBinaryString(ConversionUtils.stringToInt(input));
+  static stringToBinaryString(input, numDigits = null) {
+    return ConversionUtils.intToBinaryString(ConversionUtils.stringToInt(input), numDigits);
   }
 }
 

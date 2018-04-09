@@ -89,17 +89,30 @@ class BitOperations extends React.Component {
 					</div>
 				</div>
 				<div className="input-module__result">
-					{ConversionUtils.intToString(result, 16)}
+					<div className="input-module__opposite-cols">
+						<span>{"Hex: "}</span> 
+						<span >{ConversionUtils.intToString(result, 16)}</span>
+					</div>
+					<div className="input-module__opposite-cols">
+						<span>{"Decimal: "}</span> 
+						<span>{ConversionUtils.intToString(result, 10)}</span>
+					</div>
 				</div>
 			</div>
 		);
 
+		const NUM_BINARY_DIGITS = 32;
+
 		let bStrings = this.state.inputs.map(
-			(e) => ConversionUtils.stringToBinaryString(e)
+			(e) => ConversionUtils.stringToBinaryString(e, NUM_BINARY_DIGITS)
 		);
-		let numDigits = Math.max(...bStrings.map((e) => e.replace(/\s/g, '').length));
+		// let numDigits = Math.max(...bStrings.map((e) => e.replace(/\s/g, '').length));
 
 		bStrings = FormatUtils.formatBinaryStrings(bStrings, this.state.operator);
+
+		let formattedResult = FormatUtils.greyLeadingZeros(
+			ConversionUtils.intToString(result, 2, NUM_BINARY_DIGITS)
+		);
 
 		let binaryInput = (
 			<div className="input-module">
@@ -119,7 +132,7 @@ class BitOperations extends React.Component {
 					</div>
 				</div>
 				<div className="input-module__result">
-					{ConversionUtils.intToString(result, 2, numDigits)}
+					{formattedResult}
 				</div>
 			</div>
 		);
@@ -127,16 +140,143 @@ class BitOperations extends React.Component {
 		// TODO: make inputs accept hex / binary only
 		return (
 			<div className="app-wrapper">
-				<h2 className="app-title">Bit Operations</h2>
-				<div className="app">
-					{hexInput}
-					{binaryInput}
-				</div>
-				<div>
-				</div>
-			</div>
+				<div className="app-title">Bitwise Operation Explorer</div>
+				<div className="app-description">
+					{"Play around with signed 32-bit ints!"}<br/>  
+					{"Define the bit patten using hexadecimal (0x7AF3B), \
+							binary (0b0110), decimal (107), limits (INT_MAX), \
+							and simple bit shifts (1 << 3)."}<br/>  
+							{"Experiment with different bitwise operations (&, |, ^, ~)."}
+
+						</div>
+						<div className="app-input-modules">
+							{hexInput}
+							{binaryInput}
+						</div>
+						<div className="app-decimal-result">
+						</div>
+						<div className="app-bitwise-info">
+							{HexBinaryDecimalTable()}
+							{BitwiseOperatorTable()}
+						</div>
+					</div>
 		);
 	}
+}
+
+const HexBinaryDecimalTable = () => {
+	let rows = [];
+	for (let i = 0; i < 0xF; i++) {
+		rows[i] = (
+			<tr>
+				<td>{"0x" + i.toString(16).toUpperCase()}</td>
+				<td>{ConversionUtils.intToBinaryString(i, 4)}</td>
+				<td>{i.toString(10)}</td>
+			</tr>
+		);
+	}
+	return (
+		<table className="app-bitwise-info__conversion-table">
+			<tbody>
+				<tr>
+					<th>Hexadecimal</th>
+					<th>Binary</th>
+					<th>Decimal</th>
+				</tr>
+				{rows}
+			</tbody>
+		</table>
+	);
+}
+
+const BitwiseOperatorTable = () => {
+	let testCases = [[1, 1], [1, 0], [0, 1], [0, 0]];
+	let andRows = testCases.map((c) => {
+		return (
+			<tr>
+				<td>{c[0]}</td>
+				<td>{c[1]}</td>
+				<td style={{
+					fontWeight: "bold", 
+					backgroundColor:"#DDD"
+				}}>{c[0] & c[1]}</td>
+		</tr>
+		);
+	});
+	let orRows = testCases.map((c) => {
+		return (
+			<tr>
+				<td>{c[0]}</td>
+				<td>{c[1]}</td>
+				<td style={{
+					fontWeight: "bold", 
+					backgroundColor:"#DDD"
+				}}>{c[0] | c[1]}</td>
+		</tr>
+		);
+	});
+	let exOrRows = testCases.map((c) => {
+		return (
+			<tr>
+				<td>{c[0]}</td>
+				<td>{c[1]}</td>
+				<td style={{
+					fontWeight: "bold", 
+					backgroundColor:"#DDD"
+				}}>{c[0] ^ c[1]}</td>
+		</tr>
+		);
+	});
+
+	return (
+		<div className="app-bitwise-info__operator-tables">
+			<table className="app-bitwise-info__operator-table">
+				<tbody>
+					<tr>
+						<th colspan="3">& (AND)</th>
+					</tr>
+					{andRows}
+				</tbody>
+			</table>
+			<table className="app-bitwise-info__operator-table">
+				<tbody>
+					<tr>
+						<th colspan="3">| (OR)</th>
+					</tr>
+					{orRows}
+				</tbody>
+			</table>
+			<table className="app-bitwise-info__operator-table">
+				<tbody>
+					<tr>
+						<th colspan="3">^ (EXOR)</th>
+					</tr>
+					{exOrRows}
+				</tbody>
+			</table>
+			<table className="app-bitwise-info__operator-table">
+				<tbody>
+					<tr>
+						<th colspan="2">~ (NOT)</th>
+					</tr>
+					<tr>
+						<td>{1}</td>
+						<td style={{
+							fontWeight: "bold", 
+							backgroundColor:"#DDD"
+						}}>{0}</td>
+				</tr>
+				<tr>
+					<td>{0}</td>
+					<td style={{
+						fontWeight: "bold", 
+						backgroundColor:"#DDD"
+					}}>{1}</td>
+			</tr>
+		</tbody>
+		</table>
+	</div>
+	);
 }
 
 
