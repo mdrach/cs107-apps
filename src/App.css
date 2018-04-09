@@ -12,23 +12,20 @@ body {
 .app-wrapper {
   display: flex;
   flex-direction: column;
-  max-width: 1024px;
   margin: auto;
-
+  max-width: 1024px;
 }
 
 .app-title {
-  /* margin: 30px 30px 30px 0; */
-  text-align: left;
   font-size: 30px;
   font-weight: bold;
   margin: 10px 0 20px 0;
+  text-align: left;
 }
 
 .app-description {
-  padding: 0 20px 30px 20px;
   line-height: 1.5;
-
+  padding: 0 20px 30px 20px;
 }
 
 .dataListDropdown {
@@ -38,15 +35,16 @@ body {
 .app-input-modules {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .app-decimal-result {
-  margin-right: 10px;
-  font-size: 25px;
-  text-align: right;
-  font-weight: bold;
   font-family: monospace;
+  font-size: 25px;
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: right;
 }
 
 .input-module__opposite-cols {
@@ -58,6 +56,7 @@ body {
 
 .input-module {
   margin: 0 0 0 20px;
+  min-width: fit-content;
 }
 
 .input-module__title {
@@ -76,17 +75,18 @@ body {
 /* input module */
 
 .input-module__inputs {
-  font-size: 25px;
-  height: 120px;
-  text-align: right;
+  align-items: flex-end;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  font-size: 25px;
+  height: 120px;
   justify-content: flex-end;
+  text-align: right;
 }
 
 .input-module__inputs--binary {
   width: 600px;
+  min-width: fit-content;
 }
 
 .input-module__inputs--hex {
@@ -95,47 +95,42 @@ body {
 
 .input-module__input {
   font-family: monospace;
+  font-weight: bold;
   height: 25px;
-  padding: 5px 0;
   line-height: 1;
   margin: 5px 0;
+  padding: 5px 0;
 }
 
 .input-module__input--hex {
-  text-align: right;
+  background-color: none;
   border: none;
   border-bottom: 2px solid #DDD;
-
-  /* border-radius: 5px; */
-  /* border-style: solid; */
-  /* border-color: #BBB; */
-  margin: 5px 0;
   color: #bf3131;
-  background-color: none;
-  outline: 0;
   font-size: 25px;
+  margin: 5px 0;
+  outline: 0;
+  text-align: right;
   width: 100%;
 }
 
 .input-module__result {
   border-top: 3px solid black;
+  font-family:monospace;
+  font-size: 25px;
+  font-weight: bold;
   margin-top: 5px;
   padding-top: 10px;
-  font-size: 25px;
   text-align: right;
-  font-weight: bold;
-  font-family:monospace;
 }
-
-
 
 .input-module__operator {
   align-items: flex-end;
-  flex-direction: row;
   display: flex;
+  flex-direction: row;
+  font-size: 25px;
   min-width: 60px;
   padding: 10px;
-  font-size: 25px;
 }
 
 .input-module__operator-dropdown {
@@ -146,7 +141,6 @@ body {
 .input-module__operator-dropdown__value {
   color: #bf3131;
 }
-
 
 /* information at bottom */ 
 
@@ -161,6 +155,7 @@ body {
   display: flex;
   flex-direction: row;
 }
+
 .app-bitwise-info__operator-table {
     width: 100px;
 }
@@ -172,8 +167,8 @@ body {
 .app-bitwise-info table {
     border-collapse: collapse;
     margin: 20px;
-
 }
+
 .app-bitwise-info table th, td {
     /* box-sizing: border-box; */
     border: 2px solid black;

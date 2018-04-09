@@ -27,7 +27,7 @@ class ConversionUtils {
 
     input = input.replace(/\s/g, '').toLowerCase(); // remove spaces
 
-    let not = /^~[^~]+$/.test(input);
+    let not = /^~[^~<<>>]+$/.test(input);
     if (not) input = input.substring(1);
 
     if (/^0x[0-9a-fA-F]+$/.test(input)) {  // hex
@@ -43,19 +43,32 @@ class ConversionUtils {
       [oldVal, amount] = input.split("<<").map(
         (e) => ConversionUtils.stringToInt(e)
       );
-      if (oldVal !== null && amount !== null && amount >= 0) {
-        result = (oldVal << amount);
+      if (oldVal !== null && amount !== null) {
+        result = ConversionUtils.nonWrappingLeftShift(oldVal, amount);
       }
     } else if (/^[^<>]+>>[^<>]+$/.test(input)) {     // right shift
       let oldVal, amount;
       [oldVal, amount] = input.split(">>").map(
         (e) => ConversionUtils.stringToInt(e)
       );
-      if (oldVal !== null && amount !== null && amount >= 0) {
-        result = (oldVal >> amount);
+      if (oldVal !== null && amount !== null) {
+        result = ConversionUtils.nonWrappingLeftShift(oldVal, -amount);
       }
     }
     return (not) ? ~result : result;
+  }
+
+  static nonWrappingLeftShift(val, amount) {
+    if (amount > 0) {
+      for (let i = 0; i < amount; i++) {
+        val = (val & (~0 >>> 1)) << 1;
+      } 
+    } else {
+      for (let i = 0; i < Math.abs(amount); i++) {
+        val = (val & (~1)) >> 1;
+      } 
+    }
+    return val;
   }
 
   static intToString(val, base, numDigits = null) {

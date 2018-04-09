@@ -3,6 +3,8 @@ import ConversionUtils from "../helpers/conversionUtils"
 import FormatUtils from "../helpers/formatUtils"
 import Select from 'react-select';
 
+const NUM_BINARY_DIGITS = 32;
+
 class BitOperations extends React.Component {
 	constructor(props) {
 		super(props);
@@ -69,6 +71,11 @@ class BitOperations extends React.Component {
 							<div>
 								<input
 									autoFocus
+									onFocus={(e) => {
+										var val = e.target.value;
+										e.target.value = '';
+										e.target.value = val;
+									}}
 									maxLength={16}
 									className="input-module__input input-module__input--hex"
 									type="text"
@@ -101,14 +108,20 @@ class BitOperations extends React.Component {
 			</div>
 		);
 
-		const NUM_BINARY_DIGITS = 32;
 
 		let bStrings = this.state.inputs.map(
 			(e) => ConversionUtils.stringToBinaryString(e, NUM_BINARY_DIGITS)
 		);
 		// let numDigits = Math.max(...bStrings.map((e) => e.replace(/\s/g, '').length));
 
-		bStrings = FormatUtils.formatBinaryStrings(bStrings, this.state.operator);
+		if (!bStrings[0].includes("invalid") && !bStrings[1].includes("invalid")) { // TODO fix ugly hack
+			bStrings = FormatUtils.formatBinaryStrings(bStrings, this.state.operator);
+
+		} else if (!bStrings[0].includes("invalid")) {
+			bStrings[0] = FormatUtils.greyLeadingZeros(bStrings[0]);
+		} else if (!bStrings[1].includes("invalid")) {
+			bStrings[1] = FormatUtils.greyLeadingZeros(bStrings[1]);
+		}
 
 		let formattedResult = FormatUtils.greyLeadingZeros(
 			ConversionUtils.intToString(result, 2, NUM_BINARY_DIGITS)
@@ -142,7 +155,7 @@ class BitOperations extends React.Component {
 			<div className="app-wrapper">
 				<div className="app-title">Bitwise Operation Explorer</div>
 				<div className="app-description">
-					{"Play around with signed 32-bit ints!"}<br/>  
+					{"Play around with "} <span style={{fontWeight: "bold"}}>signed 32-bit ints</span>{"!"}<br/>  
 					{"Define the bit patten using hexadecimal (0x7AF3B), \
 							binary (0b0110), decimal (107), limits (INT_MAX), \
 							and simple bit shifts (1 << 3)."}<br/>  
@@ -166,10 +179,10 @@ class BitOperations extends React.Component {
 
 const HexBinaryDecimalTable = () => {
 	let rows = [];
-	for (let i = 0; i < 0xF; i++) {
+	for (let i = 0; i <= 0xF; i++) {
 		rows[i] = (
-			<tr>
-				<td>{"0x" + i.toString(16).toUpperCase()}</td>
+			<tr key={i}>
+				<td>{i.toString(16).toUpperCase()}</td>
 				<td>{ConversionUtils.intToBinaryString(i, 4)}</td>
 				<td>{i.toString(10)}</td>
 			</tr>
@@ -193,7 +206,7 @@ const BitwiseOperatorTable = () => {
 	let testCases = [[1, 1], [1, 0], [0, 1], [0, 0]];
 	let andRows = testCases.map((c) => {
 		return (
-			<tr>
+			<tr key={c}>
 				<td>{c[0]}</td>
 				<td>{c[1]}</td>
 				<td style={{
@@ -205,7 +218,7 @@ const BitwiseOperatorTable = () => {
 	});
 	let orRows = testCases.map((c) => {
 		return (
-			<tr>
+			<tr key={c}>
 				<td>{c[0]}</td>
 				<td>{c[1]}</td>
 				<td style={{
@@ -217,7 +230,7 @@ const BitwiseOperatorTable = () => {
 	});
 	let exOrRows = testCases.map((c) => {
 		return (
-			<tr>
+			<tr key={c}>
 				<td>{c[0]}</td>
 				<td>{c[1]}</td>
 				<td style={{
@@ -233,7 +246,7 @@ const BitwiseOperatorTable = () => {
 			<table className="app-bitwise-info__operator-table">
 				<tbody>
 					<tr>
-						<th colspan="3">& (AND)</th>
+						<th colSpan="3">& (AND)</th>
 					</tr>
 					{andRows}
 				</tbody>
@@ -241,7 +254,7 @@ const BitwiseOperatorTable = () => {
 			<table className="app-bitwise-info__operator-table">
 				<tbody>
 					<tr>
-						<th colspan="3">| (OR)</th>
+						<th colSpan="3">| (OR)</th>
 					</tr>
 					{orRows}
 				</tbody>
@@ -249,7 +262,7 @@ const BitwiseOperatorTable = () => {
 			<table className="app-bitwise-info__operator-table">
 				<tbody>
 					<tr>
-						<th colspan="3">^ (EXOR)</th>
+						<th colSpan="3">^ (EXOR)</th>
 					</tr>
 					{exOrRows}
 				</tbody>
@@ -257,7 +270,7 @@ const BitwiseOperatorTable = () => {
 			<table className="app-bitwise-info__operator-table">
 				<tbody>
 					<tr>
-						<th colspan="2">~ (NOT)</th>
+						<th colSpan="2">~ (NOT)</th>
 					</tr>
 					<tr>
 						<td>{1}</td>
