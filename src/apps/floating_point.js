@@ -81,34 +81,47 @@ class FloatingPoint extends React.Component {
     this.setState({exp: newExp});
   }
 
+  handleBinaryUpdate = (e) => {
+    let val = e.target.val + Array(32).join("0").substring(0, 32); // TODO make real
+    let newSign = parseInt(val[0], 2);
+    let newExp = parseInt(val.substring(1,9), 2);
+    let newMantissa = parseInt(val.substring(9), 2);
+    this.setState({
+      sign: newSign,
+      exp: newExp,
+      mantissa: newMantissa
+    });
+  }
+
   // TODO limit inputs to binary
   render() {
     return (
-      <div>
-        <h2>Floating Point</h2>
-        <div>
-          <input 
-            type="text" 
-            value={this.state.sign} 
-            onChange={(e) => this.setState({sign: parseInt(e.target.value, 2)})}
-          />
-          <input 
-            type="text" 
-            value={this.getExp()} 
-            onChange={(e) => this.setState({exp: parseInt(e.target.value, 2)})}
-          />
-          <input 
-            type="text" 
-            value={this.getMantissa()} 
-            onChange={(e) => this.setState({mantissa: parseInt(e.target.value, 2)})} 
-          />
+      <div className="app-wrapper">
+        <div className="app-title">Floating Point Numbers</div>
+        <div className="app-description">
+          32-bit floating point numbers have three parts. <br/>
+          The <em>mantissa</em> (rightmost 23 bits) contains the digits of the number.  <br />
+          The <em>exponent</em> (middle 8 bits) determines the location of the decimal point within the digits of the mantissa.  <br/>
+          Finally, the <em>sign bit</em> specifies whether the number is positive or negative.
         </div>
-        <div>
-          (-1)^sign x 2^(exponent-127) x 1.mantissa
+        <div className="app-input-modules">
+          <div>
+            <input 
+              type="text" 
+              value={this.state.sign} 
+              onChange={(e) => this.handleBinaryUpdate(e)}
+            />
+          </div>
+
+          <div>
+            (-1)^sign x 2^(exponent-127) x 1.mantissa
+          </div>
+
+          <div>
+            {this.generateInteractiveView()}
+          </div>
         </div>
-        <div>
-          {this.generateInteractiveView()}
-        </div>
+
       </div>
     );
   }
