@@ -61,12 +61,12 @@ class BitOperations extends React.Component {
 		);
 
 		let hexInput = (
-			<div className="input-module">
-				<div className="input-module__body">
-					<div className="input-module__operator">
+			<div className="input-module input-module-gap-padding">
+				<div className="flex-row">
+					<div className="input-module__operator flex-row">
 						{operatorDropdown}
 					</div>
-					<div className="input-module__inputs input-module__inputs--hex">
+					<div className="input-module__inputs input-module__inputs--hex flex-row">
 						<div>
 							<div>
 								<input
@@ -129,11 +129,11 @@ class BitOperations extends React.Component {
 
 		let binaryInput = (
 			<div className="input-module">
-				<div className="input-module__body">
-					<div className="input-module__operator">
+				<div className="flex-row">
+					<div className="input-module__operator flex-row">
 						{this.state.operator}
 					</div>
-					<div className="input-module__inputs input-module__inputs--binary">
+					<div className="input-module__inputs input-module__inputs--binary flex-row">
 						<div>
 							<div className="input-module__input">
 								{bStrings[0]}
@@ -162,13 +162,13 @@ class BitOperations extends React.Component {
 							{"Experiment with different bitwise operations (&, |, ^, ~)."}
 
 						</div>
-						<div className="app-input-modules">
+						<div className="app-input-modules flex-row flex-start-wrap">
 							{hexInput}
 							{binaryInput}
 						</div>
 						<div className="app-decimal-result">
 						</div>
-						<div className="app-bitwise-info">
+						<div className="app-bitwise-info flex-row">
 							{HexBinaryDecimalTable()}
 							{BitwiseOperatorTable()}
 						</div>
@@ -242,7 +242,7 @@ const BitwiseOperatorTable = () => {
 	});
 
 	return (
-		<div className="app-bitwise-info__operator-tables">
+		<div className="flex-row">
 			<table className="app-bitwise-info__operator-table">
 				<tbody>
 					<tr>

@@ -28,16 +28,35 @@ body {
   padding: 0 20px 30px 20px;
 }
 
-.dataListDropdown {
-  width: 70px;
+.app-input-modules {
+  margin-left: 20px;
 }
 
-.app-input-modules {
+.input-module {
+  min-width: fit-content;
+}
+
+.input-module-gap-padding {
+  margin-right: 20px
+}
+
+.flex-row {
   display: flex;
   flex-direction: row;
+}
+
+.flex-start-wrap {
   justify-content: flex-start;
   flex-wrap: wrap;
 }
+
+
+/* Floating Point app */
+
+
+
+
+/* Bit Operations app */
 
 .app-decimal-result {
   font-family: monospace;
@@ -52,32 +71,8 @@ body {
   justify-content: space-between;
 }
 
-/* bit operations input-module */
-
-.input-module {
-  margin: 0 0 0 20px;
-  min-width: fit-content;
-}
-
-.input-module__title {
-  /* margin: 30px 30px 30px 0; */
-  /* font-size: 30px; */
-  /* font-weight: bold; */
-}
-
-.input-module__body {
-  display: flex;
-  flex-direction: row;
-}
-
-/* Bit Operations app */
-
-/* input module */
-
 .input-module__inputs {
   align-items: flex-end;
-  display: flex;
-  flex-direction: row;
   font-size: 25px;
   height: 120px;
   justify-content: flex-end;
@@ -126,8 +121,6 @@ body {
 
 .input-module__operator {
   align-items: flex-end;
-  display: flex;
-  flex-direction: row;
   font-size: 25px;
   min-width: 60px;
   padding: 10px;
@@ -145,19 +138,12 @@ body {
 /* information at bottom */ 
 
 .app-bitwise-info {
-  display: flex;
-  flex-direction: row;
   justify-content: space-between;
   margin: 100px 25px;
 }
 
-.app-bitwise-info__operator-tables {
-  display: flex;
-  flex-direction: row;
-}
-
 .app-bitwise-info__operator-table {
-    width: 100px;
+  width: 100px;
 }
 
 .app-bitwise-info__conversion-table {
@@ -165,15 +151,13 @@ body {
 }
 
 .app-bitwise-info table {
-    border-collapse: collapse;
-    margin: 20px;
+  border-collapse: collapse;
+  margin: 20px;
 }
 
 .app-bitwise-info table th, td {
-    /* box-sizing: border-box; */
-    border: 2px solid black;
-    text-align: center;
-    padding: 3px;
-
+  border: 2px solid black;
+  text-align: center;
+  padding: 3px;
 }
 
