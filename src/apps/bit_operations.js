@@ -262,7 +262,7 @@ const BitwiseOperatorTable = () => {
 			<table className="app-bitwise-info__operator-table">
 				<tbody>
 					<tr>
-						<th colSpan="3">^ (EXOR)</th>
+						<th colSpan="3">^ (XOR)</th>
 					</tr>
 					{exOrRows}
 				</tbody>
