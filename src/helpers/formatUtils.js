@@ -59,7 +59,6 @@ class FormatUtils {
 		let styleArray = [];
 		styleArray = FormatUtils.getGreyStyle(s, styleArray);
 		return s.split("").map((c,i) => (<span key={i} style={styleArray[i]}>{c}</span>));
-
 	}
 
 	static getGreyStyle(s, styleArray) {

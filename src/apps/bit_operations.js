@@ -25,7 +25,6 @@ class BitOperations extends React.Component {
 		this.setState({inputs: inputs});
 	}
 
-
 	evaluateResult = () => {
 		let val1 = ConversionUtils.stringToInt(this.state.inputs[0]);
 		let val2 = ConversionUtils.stringToInt(this.state.inputs[1]);
@@ -107,7 +106,6 @@ class BitOperations extends React.Component {
 				</div>
 			</div>
 		);
-
 
 		let bStrings = this.state.inputs.map(
 			(e) => ConversionUtils.stringToBinaryString(e, NUM_BINARY_DIGITS)

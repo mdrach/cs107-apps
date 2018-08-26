@@ -10,7 +10,7 @@ import HeapAllocator from "./apps/heap_allocator.js";
 import AssemblyStackFrame from "./apps/assembly_stack_frame.js";
 import StackAndHeap from "./apps/stack_and_heap.js";
 
-const BasicExample = () => (
+const AppRoot = () => (
   <Router>
     <div>
       <ul>
@@ -52,4 +52,4 @@ const Home = () => (
   </div>
 );
 
-export default BasicExample;
+export default AppRoot;
